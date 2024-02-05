@@ -1,0 +1,55 @@
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "bun run lint",
+        "bun run build"
+      ]
+    }
+  ],
+  "hosting": [
+    {
+      "site": "real-hope-podcast",
+      "public": "frontend",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "/podcast.rss",
+          "function": {
+            "functionId": "generatePodcastFeed"
+          }
+        }
+      ]
+    },
+    {
+      "site": "real-hope-podcast-admin",
+      "public": "admin/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ],
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

@@ -13,11 +13,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v1
       - run: bun install --frozen-lockfile
-        with:
-          working_directory: admin
+        working-directory: admin
       - run: bun run build
-        with:
-          working_directory: admin
+        working-directory: admin
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

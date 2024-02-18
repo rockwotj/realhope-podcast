@@ -12,6 +12,7 @@ export interface TrimmerOutput {
   readonly start: number;
   readonly end: number;
   readonly url: string;
+  readonly duration: number; // in seconds
 };
 
 interface TrimmerProps {
@@ -76,7 +77,7 @@ export function Trimmer({url, onSubmit}: TrimmerProps) {
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} />
               </FormControl>
               <Spacer m='2' />
-              <Button onClick={() => onSubmit({start, end, title, url})}>
+              <Button onClick={() => onSubmit({start, end, title, url, duration: end - start})}>
                 Upload Podcast
               </Button>
             </Box>

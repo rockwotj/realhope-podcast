@@ -15,6 +15,7 @@ function App() {
       end={state.end}
       title={state.title}
       url={state.url}
+      duration={state.duration}
     />
   }
 }

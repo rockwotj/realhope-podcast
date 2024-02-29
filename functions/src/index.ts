@@ -64,6 +64,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
   const feed = {
     rss: {
       _attributes: {
+        version: "2.0",
         ...flattenWithColonPrefix({
           xmlns: {
             itunes: "http://www.itunes.com/dtds/podcast-1.0.dtd",
@@ -71,7 +72,6 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
             atom: "http://www.w3.org/2005/Atom",
             podcast: "https://podcastindex.org/namespace/1.0",
             media: "http://search.yahoo.com/mrss/",
-            version: "2.0",
           },
         }),
       },

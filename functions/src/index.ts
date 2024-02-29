@@ -45,7 +45,6 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
     owner: flattenWithColonPrefix({
       itunes: {
         name: AUTHOR,
-        email: EMAIL,
       },
     }),
     keywords: "realhope,sermon",
@@ -78,11 +77,10 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       channel: {
         ...flattenWithColonPrefix({itunes, atom}),
         title: TITLE,
-        author: AUTHOR,
         category: "Religion &amp; Spirituality",
         description: "Real Hope Community Church Sermons in podcast form.",
         language: "en-us",
-        lastBuildDate: new Date().toISOString(),
+        lastBuildDate: new Date().toUTCString(),
         generator: "Firebase",
         copyright: "Real Hope Community Church",
         image: {
@@ -106,7 +104,6 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       feed.rss.channel.pubDate = time;
     }
     feed.rss.channel.item.push({
-      author: AUTHOR,
       title,
       pubDate: time,
       enclosure: {
@@ -124,8 +121,9 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       },
       ...flattenWithColonPrefix({
         itunes: {
+          author: AUTHOR,
           duration,
-          image: IMAGE,
+          image: {_attributes: {href: IMAGE}},
           episodeType: "full",
           explicit: "false",
         },

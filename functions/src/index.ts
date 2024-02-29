@@ -31,8 +31,8 @@ function flattenWithColonPrefix(
 }
 
 const TITLE = "Real Hope Community Church Sermons";
-const AUTHOR = "";
-const EMAIL = "";
+const AUTHOR = "Real Hope Community Church";
+const EMAIL = "office@realhopecc.com";
 const IMAGE = "https://real-hope-podcast.web.app/realhope_logo.jpg";
 const SITE = "https://real-hope-podcast.web.app/";
 const FEED_LINK = "https://real-hope-podcast.web.app/feed.rss";
@@ -127,7 +127,7 @@ exports.generatePodcastEntry = onObjectFinalized(async (event) => {
   logger.info("Generating podcast entry", event);
   const app = initApp();
   const db = getDatabase(app);
-  await db.ref(event.data.name).set({
+  await db.ref(event.data.name.replace(".", "-")).set({
     link: event.data.mediaLink,
     title: event.data.metadata?.title,
     time: event.data.metadata?.date,

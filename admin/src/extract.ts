@@ -4,6 +4,7 @@ const MONO_AUDIO_CHANNELS = 1;
 const STEREO_AUDIO_CHANNELS = 2;
 const HZ = 44100; // CD Quality
 const BIT_RATE = 128; // Standard bit rate.
+const LOWER_BIT_RATE = 96; // Lower bit rate.
 const OUTPUT_FORMAT = 'audio/mpeg';
 const MAX_SAMPLES_PER_FRAME = 1152;
 
@@ -26,7 +27,10 @@ export async function extractAudio(url: string, {start, end, channel}: Extractio
   soundSource.connect(offlineContext.destination);
   soundSource.start(onlineContext.currentTime, start, duration);
   const renderedBuffer = await offlineContext.startRendering();
-  const encoder = new Mp3Encoder(renderedBuffer.numberOfChannels, renderedBuffer.sampleRate, BIT_RATE);
+  const encoder = new Mp3Encoder(
+    renderedBuffer.numberOfChannels,
+    renderedBuffer.sampleRate,
+    channel === 'stereo' ? BIT_RATE : LOWER_BIT_RATE);
   const mp3Buffers: Uint8Array[] = [];
   if (renderedBuffer.numberOfChannels == 2) {
     const leftSamples = convertBuffer(renderedBuffer.getChannelData(0));

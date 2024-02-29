@@ -46,7 +46,7 @@ function YoutubePicker({}: PickerProps) {
 
 function LocalFilePicker({onVideoURL}: PickerProps) {
   const {openFilePicker, filesContent, loading} = useFilePicker({
-    accept: 'video/*',
+    accept: 'video/*,audio/*',
     readAs: 'ArrayBuffer',
     multiple: false,
   });

@@ -7,10 +7,10 @@ import {useEffect, useState} from "react";
 import {Unsubscribe} from "firebase/auth";
 
 
-export function Uploader({start, end, title, url, duration}: TrimmerOutput) {
+export function Uploader({start, end, title, url, date, duration}: TrimmerOutput) {
   const [uploaded, setUploaded] = useState<UploadTask | null>(null);
   const extracted = useAsync(async () => {
-    const extracted = await extractAudio(url, {start, end, channel: 'stereo'});
+    const extracted = await extractAudio(url, {start, end, channel: 'mono'});
     const storage = getStorage();
     const fileRef = ref(storage, `sermons/${new Date().toISOString()}.mp3`);
     setUploaded(uploadBytesResumable(fileRef, extracted, {
@@ -18,6 +18,7 @@ export function Uploader({start, end, title, url, duration}: TrimmerOutput) {
       customMetadata: {
         title,
         duration: duration.toFixed(0),
+        date: date.toISOString(),
       },
     }));
     return extracted;

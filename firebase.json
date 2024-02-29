@@ -10,8 +10,8 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "bun run lint",
-        "bun run build"
+        "cd functions && bun run lint",
+        "cd functions && bun run build"
       ]
     }
   ],
@@ -26,7 +26,7 @@
       ],
       "rewrites": [
         {
-          "source": "/podcast.rss",
+          "source": "/feed.rss",
           "function": {
             "functionId": "generatePodcastFeed"
           }

@@ -6,12 +6,14 @@ import RegionsPlugin from 'wavesurfer.js/dist/plugins/regions.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.js';
 import {formatDuration} from './duration';
 import {SelectableIcon} from './SelectableIcon';
+import {SingleDatepicker} from 'chakra-dayzed-datepicker';
 
 export interface TrimmerOutput {
   readonly title: string;
   readonly start: number;
   readonly end: number;
   readonly url: string;
+  readonly date: Date;
   readonly duration: number; // in seconds
 };
 
@@ -25,6 +27,7 @@ export function Trimmer({url, onSubmit}: TrimmerProps) {
   const containerRef = useRef(null);
   const [start, setStart] = useState(NaN);
   const [end, setEnd] = useState(NaN);
+  const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState(() => generateDefaultTitle());
   const theme = useTheme();
   const plugins = useMemo(() => [new RegionsPlugin(), new HoverPlugin({})], []);
@@ -77,7 +80,16 @@ export function Trimmer({url, onSubmit}: TrimmerProps) {
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} />
               </FormControl>
               <Spacer m='2' />
-              <Button onClick={() => onSubmit({start, end, title, url, duration: end - start})}>
+              <FormControl isRequired>
+                <FormLabel>Date</FormLabel>
+                <SingleDatepicker
+                  name="date-input"
+                  date={date}
+                  onDateChange={setDate}
+                />
+              </FormControl>
+              <Spacer m='2' />
+              <Button onClick={() => onSubmit({start, end, title, url, date, duration: end - start})}>
                 Upload Podcast
               </Button>
             </Box>
@@ -89,10 +101,6 @@ export function Trimmer({url, onSubmit}: TrimmerProps) {
 }
 
 function generateDefaultTitle(): string {
-  const today = new Date();
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const yyyy = today.getFullYear();
-  return `${mm}/${dd}/${yyyy} - Sermon Title (Matthew Chapter XX)`;
+  return `Sermon Title (Matthew Chapter XX)`;
 }
 

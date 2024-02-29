@@ -38,13 +38,6 @@ const SITE = "https://real-hope-podcast.web.app/";
 const FEED_LINK = "https://real-hope-podcast.web.app/feed.rss";
 
 exports.generatePodcastFeed = onRequest(async (_req, resp) => {
-  const googleplay = {
-    author: AUTHOR,
-    category: {_attributes: {text: "Christianity"}},
-    image: {
-      _attributes: {href: IMAGE},
-    },
-  };
   const itunes = {
     author: AUTHOR,
     email: EMAIL,
@@ -83,7 +76,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
         }),
       },
       channel: {
-        ...flattenWithColonPrefix({googleplay, itunes, atom}),
+        ...flattenWithColonPrefix({itunes, atom}),
         title: TITLE,
         author: AUTHOR,
         category: "Christianity",

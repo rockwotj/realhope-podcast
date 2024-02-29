@@ -60,7 +60,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       },
     }),
     keywords: "realhope,sermon",
-    explicit: "no",
+    explicit: "false",
     image: {_attributes: {href: IMAGE}},
   };
   const atom = {
@@ -80,6 +80,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
             googleplay: "http://www.google.com/schemas/play-podcasts/1.0",
             itunes: "http://www.itunes.com/dtds/podcast-1.0.dtd",
             atom: "http://www.w3.org/2005/Atom",
+            podcast: "https://podcastindex.org/namespace/1.0",
             rawvoice: "http://www.rawvoice.com/rawvoiceRssModule/",
             content: "http://purl.org/rss/1.0/modules/content/",
             version: "2.0",
@@ -94,7 +95,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
         language: "en-us",
         updated: new Date().toISOString(),
         generator: "Firebase",
-        copyright: "Real Hope Community Church 2024",
+        copyright: "Real Hope Community Church",
         image: {
           url: IMAGE,
           title: TITLE,
@@ -139,9 +140,10 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       }),
     });
   });
+  const xmlFeed = js2xml(feed, {compact: true, ignoreComment: true});
   resp.status(200)
     .appendHeader("Content-Type", "application/rss+xml")
-    .send(js2xml(feed, {compact: true, ignoreComment: true}));
+    .send(`<?xml version="1.0" encoding="UTF-8"?>${xmlFeed}`);
 });
 
 exports.generatePodcastEntry = onObjectFinalized(async (event) => {

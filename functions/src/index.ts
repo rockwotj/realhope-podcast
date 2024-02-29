@@ -71,7 +71,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
         author: AUTHOR,
         description: "Real Hope Community Church Sermons in podcast form.",
         language: "en-us",
-        updated: new Date(),
+        updated: new Date().toISOString(),
         generator: "Firebase",
         copyright: "Real Hope Community Church 2024",
         image: {

@@ -41,7 +41,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
   const itunes = {
     author: AUTHOR,
     email: EMAIL,
-    category: {_attributes: {text: "Christianity"}},
+    category: {_attributes: {text: "Religion &amp; Spirituality"}},
     owner: flattenWithColonPrefix({
       itunes: {
         name: AUTHOR,
@@ -79,7 +79,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
         ...flattenWithColonPrefix({itunes, atom}),
         title: TITLE,
         author: AUTHOR,
-        category: "Christianity",
+        category: "Religion &amp; Spirituality",
         description: "Real Hope Community Church Sermons in podcast form.",
         language: "en-us",
         lastBuildDate: new Date().toISOString(),

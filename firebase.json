@@ -41,6 +41,7 @@
         "**/.*",
         "**/node_modules/**"
       ],
+      "predeploy": "cd admin && bun run build",
       "rewrites": [
         {
           "source": "**",

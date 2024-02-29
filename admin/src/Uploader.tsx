@@ -18,7 +18,7 @@ export function Uploader({start, end, title, url, date, duration}: TrimmerOutput
       customMetadata: {
         title,
         duration: duration.toFixed(0),
-        date: date.toISOString(),
+        date: date.toUTCString(),
       },
     }));
     return extracted;

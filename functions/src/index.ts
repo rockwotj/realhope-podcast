@@ -40,14 +40,10 @@ const FEED_LINK = "https://real-hope-podcast.web.app/feed.rss";
 exports.generatePodcastFeed = onRequest(async (_req, resp) => {
   const googleplay = {
     author: AUTHOR,
+    category: {_attributes: {text: "Christianity"}},
     image: {
       _attributes: {href: IMAGE},
     },
-  };
-  const rawvoice = {
-    rating: "TV-G",
-    location: "Lake Mills, Wisconsin",
-    frequency: "Weekly",
   };
   const itunes = {
     author: AUTHOR,
@@ -77,23 +73,23 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       _attributes: {
         ...flattenWithColonPrefix({
           xmlns: {
-            googleplay: "http://www.google.com/schemas/play-podcasts/1.0",
             itunes: "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            content: "http://purl.org/rss/1.0/modules/content/",
             atom: "http://www.w3.org/2005/Atom",
             podcast: "https://podcastindex.org/namespace/1.0",
-            rawvoice: "http://www.rawvoice.com/rawvoiceRssModule/",
-            content: "http://purl.org/rss/1.0/modules/content/",
+            media: "http://search.yahoo.com/mrss/",
             version: "2.0",
           },
         }),
       },
       channel: {
-        ...flattenWithColonPrefix({googleplay, rawvoice, itunes, atom}),
+        ...flattenWithColonPrefix({googleplay, itunes, atom}),
         title: TITLE,
         author: AUTHOR,
+        category: "Christianity",
         description: "Real Hope Community Church Sermons in podcast form.",
         language: "en-us",
-        updated: new Date().toISOString(),
+        lastBuildDate: new Date().toISOString(),
         generator: "Firebase",
         copyright: "Real Hope Community Church",
         image: {
@@ -102,7 +98,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
           link: SITE,
         },
         pubDate: "", // FILLED IN LATER
-        link: FEED_LINK,
+        link: SITE,
         item: [] as unknown[],
       },
     },
@@ -122,7 +118,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       pubDate: time,
       enclosure: {
         _attributes: {
-          url: link,
+          url: link.replace("&", "&amp;"),
           type: "audio/mpeg",
           length: size,
         },
@@ -136,6 +132,9 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       ...flattenWithColonPrefix({
         itunes: {
           duration,
+          image: IMAGE,
+          episodeType: "full",
+          explicit: "false",
         },
       }),
     });
@@ -143,7 +142,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
   const xmlFeed = js2xml(feed, {compact: true, ignoreComment: true});
   resp.status(200)
     .appendHeader("Content-Type", "application/rss+xml")
-    .send(`<?xml version="1.0" encoding="UTF-8"?>${xmlFeed}`);
+    .send(`<?xml version="1.0" encoding="UTF-8"?>\n${xmlFeed}`);
 });
 
 exports.generatePodcastEntry = onObjectFinalized(async (event) => {

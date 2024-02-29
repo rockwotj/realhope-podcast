@@ -22,7 +22,7 @@ const initApp = once(() => initializeApp({
  */
 function flattenWithColonPrefix(
   objects: Record<string, Record<string, unknown>>
-) {
+): Record<string, unknown> {
   let result = {};
   forEachObj.indexed(objects, (val, key) => {
     result = {...result, ...mapKeys(val, (child) => `${key}:${child}`)};
@@ -63,10 +63,31 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
     explicit: "no",
     image: {_attributes: {href: IMAGE}},
   };
+  const atom = {
+    link: {
+      _attributes: {
+        href: FEED_LINK,
+        rel: "self",
+        type: "application/rss+xml",
+      },
+    },
+  };
   const feed = {
     rss: {
+      _attributes: {
+        ...flattenWithColonPrefix({
+          xmlns: {
+            googleplay: "http://www.google.com/schemas/play-podcasts/1.0",
+            itunes: "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            atom: "http://www.w3.org/2005/Atom",
+            rawvoice: "http://www.rawvoice.com/rawvoiceRssModule/",
+            content: "http://purl.org/rss/1.0/modules/content/",
+            version: "2.0",
+          },
+        }),
+      },
       channel: {
-        ...flattenWithColonPrefix({googleplay, rawvoice, itunes}),
+        ...flattenWithColonPrefix({googleplay, rawvoice, itunes, atom}),
         title: TITLE,
         author: AUTHOR,
         description: "Real Hope Community Church Sermons in podcast form.",

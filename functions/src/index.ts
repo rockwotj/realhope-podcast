@@ -140,7 +140,9 @@ exports.generatePodcastEntry = onObjectFinalized(async (event) => {
   logger.info("Generating podcast entry", event);
   const app = initApp();
   const db = getDatabase(app);
-  await db.ref(event.data.name.replace(".", "-")).set({
+  const path = event.data.name.replace(".", "-");
+  console.log("generating entry at", path);
+  await db.ref(path).set({
     link: event.data.mediaLink,
     title: event.data.metadata?.title,
     time: event.data.metadata?.date,
@@ -153,5 +155,5 @@ exports.removePodcastEntry = onObjectDeleted((event) => {
   logger.info("Removing podcast entry", event);
   const app = initApp();
   const db = getDatabase(app);
-  return db.ref(event.data.name).remove();
+  return db.ref(event.data.name.replace(".", "-")).remove();
 });

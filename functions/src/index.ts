@@ -108,7 +108,7 @@ exports.generatePodcastFeed = onRequest(async (_req, resp) => {
       pubDate: time,
       enclosure: {
         _attributes: {
-          url: link.replace("&", "&amp;"),
+          url: link.replaceAll("&", "&amp;"),
           type: "audio/mpeg",
           length: size,
         },
@@ -140,7 +140,7 @@ exports.generatePodcastEntry = onObjectFinalized(async (event) => {
   logger.info("Generating podcast entry", event);
   const app = initApp();
   const db = getDatabase(app);
-  const path = event.data.name.replace(".", "-");
+  const path = event.data.name.replaceAll(".", "-");
   console.log("generating entry at", path);
   await db.ref(path).set({
     link: event.data.mediaLink,
@@ -155,5 +155,5 @@ exports.removePodcastEntry = onObjectDeleted((event) => {
   logger.info("Removing podcast entry", event);
   const app = initApp();
   const db = getDatabase(app);
-  return db.ref(event.data.name.replace(".", "-")).remove();
+  return db.ref(event.data.name.replaceAll(".", "-")).remove();
 });

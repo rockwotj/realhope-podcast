@@ -48,7 +48,7 @@ export function Uploader({start, end, title, url, date, duration}: TrimmerOutput
   };
   return (
     <Flex flexDir='column' align='center'>
-      <Flex flexDir='column' m='4' p='4' w='md' minH='256px' borderWidth='1px' borderRadius='10' overflow="hidden">
+      <Flex flexDir='column' m='4' p='4' w='calc(100% - calc(2 * var(--chakra-space-4)))' minH='256px' borderWidth='1px' borderRadius='10' overflow="hidden">
         {extracted.loading ?
           <>
             <Text textAlign='center'>Extracting &amp; encoding audio clip...</Text>

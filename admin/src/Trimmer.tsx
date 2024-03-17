@@ -7,6 +7,7 @@ import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.js';
 import {formatDuration} from './duration';
 import {SelectableIcon} from './SelectableIcon';
 import {SingleDatepicker} from 'chakra-dayzed-datepicker';
+import ZoomPlugin from 'wavesurfer.js/dist/plugins/zoom.js';
 
 export interface TrimmerOutput {
   readonly title: string;
@@ -30,7 +31,7 @@ export function Trimmer({url, onSubmit}: TrimmerProps) {
   const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState(() => generateDefaultTitle());
   const theme = useTheme();
-  const plugins = useMemo(() => [new RegionsPlugin(), new HoverPlugin({})], []);
+  const plugins = useMemo(() => [new RegionsPlugin(), new HoverPlugin({}), new ZoomPlugin()], []);
   const {wavesurfer, isPlaying, currentTime} = useWavesurfer({
     container: containerRef,
     height: 100,
@@ -62,7 +63,7 @@ export function Trimmer({url, onSubmit}: TrimmerProps) {
   const isLoading = Number.isNaN(start) || Number.isNaN(end);
   return (
     <Flex flexDir='column' align='center' >
-      <Box m='4' py='4' w='md' minH='256px' borderWidth='1px' borderRadius='10' overflow='hidden'>
+      <Box m='4' py='4' w='calc(100% - calc(2 * var(--chakra-space-4)))' minH='256px' borderWidth='1px' borderRadius='10' overflow='hidden'>
         <Heading textAlign='center' py='4'>Create Podcast</Heading>
         <Box ref={containerRef} />
         {isLoading ? <Center><Spinner /></Center> :

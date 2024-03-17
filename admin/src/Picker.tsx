@@ -12,7 +12,7 @@ export function Picker({onVideoURL}: PickerProps) {
   const [location, setLocation] = useState<'local' | 'youtube'>('local');
   return (
     <Flex flexDir='column' align='center' justify="start">
-      <Flex flexDir='column' m='4' w='md' minH='256px' borderWidth='1px' borderRadius='10' overflow="hidden" align="center">
+      <Flex flexDir='column' m='4' w='calc(100% - calc(var(--chakra-space-4) * 2))' minH='256px' borderWidth='1px' borderRadius='10' overflow="hidden" align="center">
         <Heading pt='4'>Upload a video</Heading>
         {location == 'local' ? <LocalFilePicker onVideoURL={onVideoURL} /> : <YoutubePicker onVideoURL={onVideoURL} />}
       </Flex>

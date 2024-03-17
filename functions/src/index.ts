@@ -40,11 +40,11 @@ const FEED_LINK = "https://real-hope-podcast.web.app/feed.rss";
 exports.generatePodcastFeed = onRequest(async (_req, resp) => {
   const itunes = {
     author: AUTHOR,
-    email: EMAIL,
     category: {_attributes: {text: "Religion &amp; Spirituality"}},
     owner: flattenWithColonPrefix({
       itunes: {
         name: AUTHOR,
+        email: EMAIL,
       },
     }),
     keywords: "realhope,sermon",

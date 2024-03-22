@@ -3,6 +3,7 @@ import {Box, Button, Center, Flex, Input, Spinner, Heading} from "@chakra-ui/rea
 import {Youtube, FileVideo} from 'lucide-react';
 import {SelectableIcon} from './SelectableIcon';
 import {useFilePicker} from 'use-file-picker';
+import {extractAudio} from './extract';
 
 export interface PickerProps {
   readonly onVideoURL: (dataURL: string) => void;
@@ -52,10 +53,12 @@ function LocalFilePicker({onVideoURL}: PickerProps) {
   });
   useEffect(() => {
     if (filesContent.length > 0) {
-      const buffer = filesContent[0].content;
+      const {content, type} = filesContent[0];
       // TODO(rockwood): GC this properly...
-      const objectURL = URL.createObjectURL(new Blob([buffer]));
-      onVideoURL(objectURL);
+      const objectURL = URL.createObjectURL(new Blob([content], {type}));
+      extractAudio(objectURL, {start: 0, end: 1, channel: 'mono'}).then(() => {
+        onVideoURL(objectURL);
+      });
     }
   });
   return (
